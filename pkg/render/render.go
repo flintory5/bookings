@@ -6,39 +6,39 @@ import (
 	"log"
 	"net/http"
 	"path/filepath"
+
+	"github.com/flintory5/bookings/pkg/config"
 )
 
-// var tc = make(map[string]*template.Template)
+var app *config.AppConfig
+
+// NewTemplates sets the config for the template package
+func NewTemplates(a *config.AppConfig) {
+	app = a
+}
 
 // RenderTemplate renders templates using html/templates
 func RenderTemplate(w http.ResponseWriter, tmpl string) {
-	// create the template cache
-	tc, err := createTemplateCache()
-	if err != nil {
-		log.Fatal(err)
-	}
+	tc := app.TemplateCache
 
 	// get requested template from cache
 	t, ok := tc[tmpl]
 	if !ok {
-		log.Fatal(err)
+		log.Fatal("could not get template from template cache")
 	}
 
 	buf := new(bytes.Buffer)
 
-	err = t.Execute(buf, nil)
-	if err != nil {
-		log.Println(err)
-	}
+	_ = t.Execute(buf, nil)
 
 	// render the template
-	_, err = buf.WriteTo(w)
+	_, err := buf.WriteTo(w)
 	if err != nil {
-		log.Println(err)
+		log.Println("Error writing template to browser", err)
 	}
 }
 
-func createTemplateCache()(map[string]*template.Template, error){
+func CreateTemplateCache()(map[string]*template.Template, error){
 	myCache := map[string]*template.Template{}
 
 	// get all the files named *.page.tmpl from the templates folder
