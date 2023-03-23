@@ -128,11 +128,29 @@
     <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.1/dist/js/datepicker-full.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
     <script>
+        let attention = Prompt();
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                let forms = document.getElementsByClassName('needs-validation');
+                Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false)
+        })();
+
         document
             .getElementById("colorButton")
             .addEventListener("click", function () {
-                // notify("This is my message", "warning");
-                notifyModal("title", "<em>hello, world</em>", "success", "My Text for the button.")
+                attention.error({
+                    msg: "Ooops",
+                });
             });
 
         const elem = document.getElementById("reservation-dates");
@@ -147,13 +165,73 @@
             });
         }
 
-        function notifyModal(title, text, icon, confirmButtonText){
+        function notifyModal(title, text, icon, confirmButtonText) {
             Swal.fire({
-                    title: title,
-                    html: text,
+                title: title,
+                html: text,
+                icon: icon,
+                confirmButtonText: confirmButtonText
+            })
+        }
+
+        function Prompt() {
+            let toast = function (c) {
+                const {
+                    msg = "",
+                        icon = "success",
+                        position = "top-end",
+                } = c;
+
+                const Toast = Swal.mixin({
+                    toast: true,
+                    title: msg,
+                    position: position,
                     icon: icon,
-                    confirmButtonText: confirmButtonText
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
                 })
+
+                Toast.fire({});
+            }
+
+            let success = function (c) {
+                const {
+                    msg = "",
+                    title = "",
+                    footer = "",
+                } = c;
+                Swal.fire({
+                    icon: 'success',
+                    title: title,
+                    text: msg,
+                    footer: footer
+                })
+            }
+
+            let error = function (c) {
+                const {
+                    msg = "",
+                    title = "",
+                    footer = "",
+                } = c;
+                Swal.fire({
+                    icon: 'error',
+                    title: title,
+                    text: msg,
+                    footer: footer
+                })
+            }
+
+            return {
+                toast: toast,
+                success: success,
+                error: error
+            }
         }
     </script>
 </body>
