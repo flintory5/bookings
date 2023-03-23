@@ -8,6 +8,12 @@ jobs:
   get_data:
     runs-on: ubuntu-latest
     steps:
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.ACTIONS_TOKEN }}
+          branch: refs/pull/42/merge
+          directory: .
       - name: Checkout code
         uses: actions/checkout@master
       - name: Update diagram
