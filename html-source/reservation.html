@@ -40,6 +40,10 @@
         .notie-container {
             box-shadow: none;
         }
+
+        .datepicker {
+            z-index: 10000;
+        }
     </style>
 </head>
 
@@ -147,10 +151,24 @@
 
         document
             .getElementById("colorButton")
-            .addEventListener("click", function () {
-                attention.error({
-                    msg: "Ooops",
-                });
+            .addEventListener("click", function () {          
+                let html = `
+                    <form id="check-availability-form" action="" method="post" novalidate class="needs-validation">
+                        <div class="row mx-1">
+                            <div class="col">
+                                <div class="row" id="reservation-dates-modal">
+                                    <div class="col">
+                                        <input disabled required class="form-control" type="text" name="start" id="start" placeholder="Arrival">
+                                    </div>
+                                    <div class="col">
+                                        <input disabled required class="form-control" type="text" name="end" id="end" placeholder="Departure">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                `;
+                attention.custom({msg: html, title: "Choose your dates"})
             });
 
         const elem = document.getElementById("reservation-dates");
@@ -202,8 +220,8 @@
             let success = function (c) {
                 const {
                     msg = "",
-                    title = "",
-                    footer = "",
+                        title = "",
+                        footer = "",
                 } = c;
                 Swal.fire({
                     icon: 'success',
@@ -216,8 +234,8 @@
             let error = function (c) {
                 const {
                     msg = "",
-                    title = "",
-                    footer = "",
+                        title = "",
+                        footer = "",
                 } = c;
                 Swal.fire({
                     icon: 'error',
@@ -227,10 +245,48 @@
                 })
             }
 
+            async function custom(c) {
+                const {
+                    msg = "",
+                    title = "",
+                } = c;
+
+                const {value: formValues} = await Swal.fire({
+                    title: title,
+                    html: msg,
+                    focusConfirm: false,
+                    backdrop: false,
+                    showCancelButton: true,
+                    willOpen: () => {
+                        const elem = document.getElementById("reservation-dates-modal");
+                        const rp = new DateRangePicker(elem, {
+                            format: 'yyyy-mm-dd',
+                            showOnFocus: true,
+                            orientation: 'auto top'
+                        })
+                    },
+                    preConfirm: () => {
+                        return [
+                            document.getElementById('start').value,
+                            document.getElementById('end').value
+                        ]
+                    },
+                    didOpen: () => {
+                        document.getElementById('start').removeAttribute('disabled');
+                        document.getElementById('end').removeAttribute('disabled');
+                    }
+                })
+
+                if (formValues) {
+                    Swal.fire(JSON.stringify(formValues))
+                }
+            }
+
             return {
                 toast: toast,
                 success: success,
-                error: error
+                error: error,
+                custom: custom
             }
         }
     </script>
