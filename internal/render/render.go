@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"path/filepath"
 
-	"github.com/flintory5/bookings/pkg/config"
-	"github.com/flintory5/bookings/pkg/models"
+	"github.com/flintory5/bookings/internal/config"
+	"github.com/flintory5/bookings/internal/models"
 	"github.com/justinas/nosurf"
 )
 

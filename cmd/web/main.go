@@ -7,9 +7,9 @@ import (
 	"time"
 
 	"github.com/alexedwards/scs/v2"
-	"github.com/flintory5/bookings/pkg/config"
-	"github.com/flintory5/bookings/pkg/handlers"
-	"github.com/flintory5/bookings/pkg/render"
+	"github.com/flintory5/bookings/internal/config"
+	"github.com/flintory5/bookings/internal/handlers"
+	"github.com/flintory5/bookings/internal/render"
 )
 
 const portNumber = ":8080"
