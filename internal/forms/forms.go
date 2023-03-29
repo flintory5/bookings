@@ -29,7 +29,7 @@ func New(data url.Values) *Form {
 }
 
 // Required checks that specific fields in the form are filled out
-func (f *Form) Required(fields ...string) {
+func (f *Form) Required(fields ...string)  {
 	for _, field := range fields {
 		value := f.Get(field)
 		if strings.TrimSpace(value) == "" {
