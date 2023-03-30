@@ -40,7 +40,7 @@ func (f *Form) Required(fields ...string)  {
 
 // Required checks that specific fields in the form are filled out
 func (f *Form) Has(field string, r *http.Request) bool {
-	x := r.Form.Get(field)
+	x := f.Get(field)
 	if x == "" {
 		return false
 	}
