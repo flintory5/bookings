@@ -31,6 +31,10 @@ func TestForm_Fail_Valid(t *testing.T) {
 	if isValid {
 		t.Error("got an valid form but wanted invalid")
 	}
+
+	if form.Errors.Get("first_name") == "" {
+		t.Error("should have an error but didn't get one")
+	}
 }
 
 func TestForm_New(t *testing.T){
@@ -50,7 +54,7 @@ func TestForm_Required(t *testing.T) {
 	data.Add("first_name", "Flint")
 	form := New(data)
 	form.Required("first_name")
-	if len(form.Errors) != 0 {
+	if form.Errors.Get("first_name") != "" {
 		t.Error("Expected no errors but got one")
 	}
 }
@@ -68,7 +72,7 @@ func TestForm_Has(t *testing.T) {
 	data := url.Values{}
 	data.Add("first_name", "Flint")
 	form := New(data)
-	form.Has("first_name", &http.Request{Form: data})
+	form.Has("first_name")
 	if len(form.Errors) != 0 {
 		t.Error("Expected no errors but got one")
 	}
@@ -78,7 +82,7 @@ func TestForm_Fail_Has(t *testing.T) {
 	data := url.Values{}
 	form := New(data)
 	
-	if form.Has("first_name", &http.Request{Form: data}) == true {
+	if form.Has("first_name") == true {
 		t.Error("Expected errors but didn't get one")
 	}
 }
@@ -87,7 +91,7 @@ func TestForm_MinLength(t *testing.T) {
 	data := url.Values{}
 	data.Add("first_name", "Flint")
 	form := New(data)
-	form.MinLength("first_name", 3, &http.Request{Form: data})
+	form.MinLength("first_name", 3)
 	if len(form.Errors) != 0 {
 		t.Error("Expected no errors but got one")
 	}
@@ -97,7 +101,7 @@ func TestForm_Fail_MinLength(t *testing.T) {
 	data := url.Values{}
 	data.Add("first_name", "Fl")
 	form := New(data)
-	if form.MinLength("first_name", 3, &http.Request{Form: data}) == true {
+	if form.MinLength("first_name", 3) == true {
 		t.Error("Expected errors but didn't get one")
 	}
 }
