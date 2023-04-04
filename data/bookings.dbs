@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="bookings" id="Project-42c" database="LogicalDesign" >
+	<schema name="INSTANCE" catalogname="bookings" >
+		<table name="reservations" prior="Entity" >
+			<column name="id" type="INT" jt="4" mandatory="y" />
+			<column name="first_name" type="VARCHAR" length="255" jt="12" />
+			<column name="last_name" type="VARCHAR" length="255" jt="12" />
+			<column name="email" type="VARCHAR" length="255" jt="12" />
+			<column name="phone" type="VARCHAR" length="255" jt="12" />
+			<column name="start_date" type="DATE" jt="91" />
+			<column name="end_date" type="DATE" jt="91" />
+			<column name="room_id" type="INT" jt="4" mandatory="y" />
+			<column name="created_at" type="DATETIME" jt="93" />
+			<column name="updated_at" type="DATETIME" jt="93" />
+			<index name="pk_reservations" unique="PRIMARY_KEY" >
+				<column name="id" />
+				<column name="room_id" />
+			</index>
+			<index name="unq_id" unique="UNIQUE_INDEX" >
+				<column name="id" />
+			</index>
+			<fk name="fk_reservations_rooms" virtual="y" to_schema="bookings.INSTANCE" to_table="rooms" type="Identifying" mandatory="y" cardinality="ZeroMore" range_from="0" range_to="0" >
+				<fk_column name="room_id" pk="id" />
+			</fk>
+		</table>
+		<table name="restrictions" prior="Entity" >
+			<column name="id" type="INT" jt="4" mandatory="y" />
+			<column name="restriction_name" type="VARCHAR" length="255" jt="12" />
+			<column name="created_at" type="DATETIME" jt="93" />
+			<column name="updated_at" type="DATETIME" jt="93" />
+			<index name="pk_restrictions" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+		</table>
+		<table name="room_restrictions" prior="Entity" >
+			<column name="id" type="INT" jt="4" mandatory="y" />
+			<column name="start_date" type="DATE" jt="91" />
+			<column name="end_date" type="DATE" jt="91" />
+			<column name="room_id" type="INT" jt="4" mandatory="y" />
+			<column name="reservation_id" type="INT" jt="4" mandatory="y" />
+			<column name="created_at" type="DATETIME" jt="93" />
+			<column name="updated_at" type="DATETIME" jt="93" />
+			<column name="restriction_id" type="INT" jt="4" mandatory="y" />
+			<index name="pk_room_restrictions" unique="PRIMARY_KEY" >
+				<column name="id" />
+				<column name="room_id" />
+				<column name="reservation_id" />
+				<column name="restriction_id" />
+			</index>
+			<fk name="fk_room_restrictions_rooms" virtual="y" to_schema="bookings.INSTANCE" to_table="rooms" type="Identifying" mandatory="y" cardinality="ZeroMore" range_from="0" range_to="0" >
+				<fk_column name="room_id" pk="id" />
+			</fk>
+			<fk name="fk_room_restrictions_reservations" virtual="y" to_schema="bookings.INSTANCE" to_table="reservations" type="Identifying" mandatory="y" cardinality="ZeroMore" range_from="0" range_to="0" >
+				<fk_column name="reservation_id" pk="id" />
+			</fk>
+			<fk name="fk_room_restrictions_restrictions" virtual="y" to_schema="bookings.INSTANCE" to_table="restrictions" type="Identifying" mandatory="y" cardinality="ZeroMore" range_from="0" range_to="0" >
+				<fk_column name="restriction_id" pk="id" />
+			</fk>
+		</table>
+		<table name="rooms" prior="Entity" >
+			<column name="id" type="INT" jt="4" mandatory="y" />
+			<column name="room_name" type="VARCHAR" length="255" jt="12" />
+			<column name="created_at" type="DATETIME" jt="93" />
+			<column name="updated_at" type="DATETIME" jt="93" />
+			<index name="pk_rooms" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+		</table>
+		<table name="users" prior="Entity" >
+			<column name="id" type="INT" jt="4" mandatory="y" />
+			<column name="first_name" type="VARCHAR" length="255" jt="12" mandatory="y" />
+			<column name="last_name" type="VARCHAR" length="255" jt="12" mandatory="y" />
+			<column name="email" type="VARCHAR" length="255" jt="12" />
+			<column name="password" type="VARCHAR" length="255" jt="12" />
+			<column name="created_at" type="DATETIME" jt="93" />
+			<column name="updated_at" type="DATETIME" jt="93" />
+			<column name="access_level" type="INT" jt="4" />
+			<index name="pk_users" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+		</table>
+	</schema>
+	<layout name="Default Layout" id="Layout-590" show_relation="columns" >
+		<entity schema="bookings.INSTANCE" name="reservations" color="C1D8EE" x="1024" y="128" />
+		<entity schema="bookings.INSTANCE" name="restrictions" color="C1D8EE" x="720" y="512" />
+		<entity schema="bookings.INSTANCE" name="room_restrictions" color="C1D8EE" x="1008" y="448" />
+		<entity schema="bookings.INSTANCE" name="rooms" color="C1D8EE" x="704" y="176" />
+		<entity schema="bookings.INSTANCE" name="users" color="C1D8EE" x="48" y="48" />
+	</layout>
+</project>
