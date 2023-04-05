@@ -1,0 +1,1 @@
+ALTER TABLE "public".room_restrictions DROP CONSTRAINT "fk_room_restrictions_reservation_id";
