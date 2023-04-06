@@ -1,0 +1,1 @@
+ALTER TABLE "public".reservations DROP CONSTRAINT "fk_reservations";

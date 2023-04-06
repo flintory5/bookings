@@ -1,0 +1,1 @@
+ALTER TABLE "public".reservations ADD CONSTRAINT fk_reservations FOREIGN KEY ( room_id ) REFERENCES "public".rooms (id);
