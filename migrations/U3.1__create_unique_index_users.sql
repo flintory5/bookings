@@ -1,0 +1,1 @@
+DROP INDEX unq_users;

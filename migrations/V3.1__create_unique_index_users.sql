@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX unq_users ON "public".users ( email );
