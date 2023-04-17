@@ -6,10 +6,13 @@ import (
 	"net/http"
 
 	"github.com/flintory5/bookings/internal/config"
+	"github.com/flintory5/bookings/internal/driver"
 	"github.com/flintory5/bookings/internal/forms"
 	"github.com/flintory5/bookings/internal/helpers"
 	"github.com/flintory5/bookings/internal/models"
 	"github.com/flintory5/bookings/internal/render"
+	"github.com/flintory5/bookings/internal/repository"
+	"github.com/flintory5/bookings/internal/repository/dbrepo"
 )
 
 // the repository used by the handlers
@@ -18,12 +21,14 @@ var Repo *Repository
 // Repository is the repository type
 type Repository struct {
 	App *config.AppConfig
+	DB repository.DatabaseRepo
 }
 
 // NewRepo creates a new Repository
-func NewRepo(a *config.AppConfig) *Repository {
+func NewRepo(a *config.AppConfig, db *driver.DB) *Repository {
 	return &Repository{
 		App: a,
+		DB: dbrepo.NewPostgresRepo(db.SQL, a),
 	}
 }
 

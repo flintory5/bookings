@@ -43,7 +43,7 @@ func ConnectSQL(dsn string) (*DB, error) {
 
 // testDB tries to ping the database
 func testDB(d *sql.DB) error {
-	err = d.Ping()
+	err := d.Ping()
 	if err != nil {
 		return err
 	}
