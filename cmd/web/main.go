@@ -15,6 +15,7 @@ import (
 	"github.com/flintory5/bookings/internal/helpers"
 	"github.com/flintory5/bookings/internal/models"
 	"github.com/flintory5/bookings/internal/render"
+	_ "github.com/joho/godotenv/autoload"
 )
 
 const portNumber = ":8080"
@@ -45,6 +46,9 @@ func main() {
 func run() (*driver.DB, error) {
 	// what am I going to put in the session
 	gob.Register(models.Reservation{})
+	gob.Register(models.User{})
+	gob.Register(models.Room{})
+	gob.Register(models.Restriction{})
 
 	// change this to true when in production
 	app.InProduction = false
@@ -65,7 +69,8 @@ func run() (*driver.DB, error) {
 
 	// connect to database
 	log.Println("Connecting to database...")
-	db, err := driver.ConnectSQL("host=postgres.ory.home port=5432 dbname=bookings user=flintory password=")
+	connString := fmt.Sprintf("host=postgres.ory.home port=5432 dbname=bookings user=%s password=%s", os.Getenv("BOOKINGS_USERNAME"), os.Getenv("BOOKINGS_PASSWORD"))
+	db, err := driver.ConnectSQL(connString)
 	if err != nil {
 		log.Fatal("cannot connect to database! Dying...")
 	}
@@ -82,7 +87,7 @@ func run() (*driver.DB, error) {
 
 	repo := handlers.NewRepo(&app, db)
 	handlers.NewHandlers(repo)
-	render.NewTemplates(&app)
+	render.NewRenderer(&app)
 	helpers.NewHelpers(&app)
 
 	return db, nil
