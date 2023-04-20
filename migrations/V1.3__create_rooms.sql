@@ -1,5 +1,5 @@
 CREATE  TABLE "public".rooms ( 
-	id                   integer  NOT NULL  ,
+	id                   serial  NOT NULL  ,
 	room_name            varchar(255)    ,
 	created_at           timestamp    ,
 	updated_at           timestamp    ,

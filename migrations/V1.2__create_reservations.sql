@@ -1,5 +1,5 @@
 CREATE  TABLE reservations ( 
-	id                   integer  NOT NULL  ,
+	id                   serial  NOT NULL  ,
 	first_name           varchar(255) DEFAULT ''   ,
 	last_name            varchar(255) DEFAULT ''   ,
 	email                varchar(255)    ,

@@ -1,5 +1,5 @@
 CREATE  TABLE "public".room_restrictions ( 
-	id                   integer  NOT NULL  ,
+	id                   serial  NOT NULL  ,
 	start_date           date    ,
 	end_date             date    ,
 	room_id              integer  NOT NULL  ,
