@@ -1,6 +1,10 @@
 package repository
 
-import "github.com/flintory5/bookings/internal/models"
+import (
+	"time"
+
+	"github.com/flintory5/bookings/internal/models"
+)
 
 
 type DatabaseRepo interface {
@@ -8,4 +12,5 @@ type DatabaseRepo interface {
 
 	InsertReservation(res models.Reservation) (int, error)
 	InsertRoomRestriction(r models.RoomRestriction) error
+	SearchAvailabilityByDates(start, end time.Time, roomID int) (bool, error)
 }
